@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hiragana Trainer</title>
+
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: system-ui, sans-serif;
+    background: #f3f4f8;
+    color: #252638;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .app {
+    background: white;
+    width: 100%;
+    max-width: 440px;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 35px #00000012;
+    text-align: center;
+  }
+
+  h1 { margin: 0 0 8px; }
+  .subtitle { color: #777; margin-bottom: 25px; }
+
+  select, button {
+    font: inherit;
+    border-radius: 10px;
+    padding: 12px 16px;
+    cursor: pointer;
+  }
+
+  select {
+    width: 100%;
+    border: 1px solid #ddd;
+    background: white;
+    margin-bottom: 22px;
+  }
+
+  .character {
+    font-size: 110px;
+    padding: 25px;
+    background: #f5f3ff;
+    border-radius: 16px;
+    margin-bottom: 18px;
+  }
+
+  .answer {
+    font-size: 28px;
+    font-weight: bold;
+    min-height: 42px;
+    color: #6846d9;
+    margin-bottom: 15px;
+  }
+
+  button {
+    border: none;
+    font-weight: 600;
+    margin: 5px;
+  }
+
+  .primary {
+    background: #6846d9;
+    color: white;
+  }
+
+  .secondary {
+    background: #eeeafc;
+    color: #5134b5;
+  }
+
+  .success {
+    background: #dcf5e5;
+    color: #176b3b;
+  }
+
+  .wrong {
+    background: #ffe5e5;
+    color: #a32c2c;
+  }
+
+  button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 25px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+  }
+
+  .stat strong {
+    display: block;
+    font-size: 23px;
+  }
+
+  .stat span {
+    color: #888;
+    font-size: 12px;
+  }
+
+  .hidden { display: none; }
+</style>
+</head>
+
+<body>
+<div class="app">
+  <h1>あ Hiragana Trainer</h1>
+  <p class="subtitle">Learn Japanese, one character at a time.</p>
+
+  <select id="group">
+    <option value="all">All basic hiragana</option>
+    <option value="vowels">あ行 – Vowels</option>
+    <option value="k">か行 – K</option>
+    <option value="s">さ行 – S</option>
+    <option value="t">た行 – T</option>
+    <option value="n">な行 – N</option>
+    <option value="h">は行 – H</option>
+    <option value="m">ま行 – M</option>
+    <option value="y">や行 – Y</option>
+    <option value="r">ら行 – R</option>
+    <option value="w">わ行 – W</option>
+  </select>
+
+  <div class="character" id="kana">あ</div>
+
+  <div class="answer" id="answer">?</div>
+
+  <button class="primary" id="reveal" onclick="reveal()">
+    Reveal answer
+  </button>
+
+  <div id="rating" class="hidden">
+    <p>Did you get it right?</p>
+    <button class="success" onclick="rate(true)">✓ Correct</button>
+    <button class="wrong" onclick="rate(false)">✗ Incorrect</button>
+  </div>
+
+  <div>
+    <button class="secondary" onclick="nextKana()">
+      Next character →
+    </button>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <strong id="total">0</strong>
+      <span>Practised</span>
+    </div>
+    <div class="stat">
+      <strong id="correct">0</strong>
+      <span>Correct</span>
+    </div>
+    <div class="stat">
+      <strong id="streak">0</strong>
+      <span>Streak</span>
+    </div>
+  </div>
+</div>
+
+<script>
+const kanaGroups = {
+  vowels: [
+    ["あ","a"], ["い","i"], ["う","u"],
+    ["え","e"], ["お","o"]
+  ],
+  k: [
+    ["か","ka"], ["き","ki"], ["く","ku"],
+    ["け","ke"], ["こ","ko"]
+  ],
+  s: [
+    ["さ","sa"], ["し","shi"], ["す","su"],
+    ["せ","se"], ["そ","so"]
+  ],
+  t: [
+    ["た","ta"], ["ち","chi"], ["つ","tsu"],
+    ["て","te"], ["と","to"]
+  ],
+  n: [
+    ["な","na"], ["に","ni"], ["ぬ","nu"],
+    ["ね","ne"], ["の","no"]
+  ],
+  h: [
+    ["は","ha"], ["ひ","hi"], ["ふ","fu"],
+    ["へ","he"], ["ほ","ho"]
+  ],
+  m: [
+    ["ま","ma"], ["み","mi"], ["む","mu"],
+    ["め","me"], ["も","mo"]
+  ],
+  y: [
+    ["や","ya"], ["ゆ","yu"], ["よ","yo"]
+  ],
+  r: [
+    ["ら","ra"], ["り","ri"], ["る","ru"],
+    ["れ","re"], ["ろ","ro"]
+  ],
+  w: [
+    ["わ","wa"], ["を","wo"], ["ん","n"]
+  ]
+};
+
+let deck = [];
+let current = null;
+let total = 0;
+let correct = 0;
+let streak = 0;
+let answered = false;
+
+function shuffle(array) {
+  const result = [...array];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+function refillDeck() {
+  const group = document.getElementById("group").value;
+  const characters = group === "all"
+    ? Object.values(kanaGroups).flat()
+    : kanaGroups[group];
+
+  deck = shuffle(characters);
+
+  // Avoid repeating the previous character at the boundary.
+  if (deck.length > 1 && deck[deck.length - 1] === current) {
+    [deck[0], deck[deck.length - 1]] =
+      [deck[deck.length - 1], deck[0]];
+  }
+}
+
+function nextKana() {
+  if (deck.length === 0) refillDeck();
+
+  current = deck.pop();
+  answered = false;
+
+  document.getElementById("kana").textContent = current[0];
+  document.getElementById("answer").textContent = "?";
+  document.getElementById("reveal").disabled = false;
+  document.getElementById("rating").classList.add("hidden");
+}
+
+function reveal() {
+  if (answered) return;
+
+  document.getElementById("answer").textContent = current[1];
+  document.getElementById("rating").classList.remove("hidden");
+  document.getElementById("reveal").disabled = true;
+}
+
+function rate(wasCorrect) {
+  if (answered) return;
+  answered = true;
+
+  total++;
+
+  if (wasCorrect) {
+    correct++;
+    streak++;
+  } else {
+    streak = 0;
+  }
+
+  document.getElementById("total").textContent = total;
+  document.getElementById("correct").textContent = correct;
+  document.getElementById("streak").textContent = streak;
+
+  nextKana();
+}
+
+document.getElementById("group").addEventListener("change", () => {
+  deck = [];
+  nextKana();
+});
+
+nextKana();
+</script>
+</body>
+</html>
+

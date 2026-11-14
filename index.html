@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hiragana Trainer</title>
   <link rel="stylesheet" href="css/styles.css">
-  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/core/app.js"></script>
 </head>
 
 <body>
@@ -32,6 +32,7 @@
 
     <!-- FLASHCARD MODE -->
     <section id="flashPanel">
+
       <div class="character" id="kana">あ</div>
       <div class="answer" id="answer">?</div>
 
@@ -44,6 +45,29 @@
       </div>
 
       <button class="secondary" id="next">Next character →</button>
+
+      <!-- FLASHCARD STATISTICS -->
+      <div class="progress">
+        <div id="progressBar"></div>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <strong id="total">0</strong>
+          <span>Practised</span>
+        </div>
+
+        <div class="stat">
+          <strong id="correct">0</strong>
+          <span>Correct</span>
+        </div>
+
+        <div class="stat">
+          <strong id="streak">0</strong>
+          <span>Streak</span>
+        </div>
+      </div>
+
     </section>
 
     <!-- DICTATION MODE -->
@@ -51,19 +75,39 @@
       <h2>Japanese Dictation</h2>
       <p>Listen and identify the character.</p>
 
-      <label for="interval">Interval between characters</label>
-      <select id="interval">
-        <option value="1">1 second</option>
-        <option value="2" selected>2 seconds</option>
-        <option value="3">3 seconds</option>
-        <option value="5">5 seconds</option>
-      </select>
-
       <div class="controls">
-        <button class="primary" id="startDictation">▶ Start</button>
-        <button class="secondary" id="pauseDictation">Ⅱ Pause</button>
-        <button class="secondary" id="repeatDictation">↻ Repeat</button>
+
+        <label for="interval">Playback speed</label>
+
+        <div class="speed-control">
+          <span>Slow</span>
+
+          <input
+            type="range"
+            id="interval"
+            min="0.5"
+            max="5"
+            step="0.5"
+            value="2"
+          >
+
+          <span>Fast</span>
+        </div>
+
+        <p id="intervalValue">3.5 seconds between characters</p>
+
+        <div class="controls">
+          <button class="primary" id="toggleDictation">
+            ▶ Play
+          </button>
+
+          <button class="secondary" id="repeatDictation">
+            ↻ Replay
+          </button>
+        </div>
+
       </div>
+
 
       <button class="secondary" id="showDictation">Show character</button>
 
@@ -71,25 +115,6 @@
       <p id="dictationStatus" class="status">Ready to listen</p>
     </section>
 
-    <!-- STATISTICS -->
-    <div class="progress">
-      <div id="progressBar"></div>
-    </div>
-
-    <div class="stats">
-      <div class="stat">
-        <strong id="total">0</strong>
-        <span>Practised</span>
-      </div>
-      <div class="stat">
-        <strong id="correct">0</strong>
-        <span>Correct</span>
-      </div>
-      <div class="stat">
-        <strong id="streak">0</strong>
-        <span>Streak</span>
-      </div>
-    </div>
   </main>
 </body>
 </html>

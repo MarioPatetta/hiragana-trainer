@@ -1,5 +1,5 @@
 
-import { getCharacters } from "./data.js";
+import { getCharacters } from "../../data/kana.js";
 
 export function shuffle(items) {
   const result = [...items];

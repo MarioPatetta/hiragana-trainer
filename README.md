@@ -2,6 +2,11 @@
 
 **Live Demo:** https://mariopatetta.github.io/hiragana-trainer/
 
+## TODO
+
+- numbers
+- charachter selection toggle instead of drop-down menu
+
 ## Audio credits
 
 Kana Sounds dataset

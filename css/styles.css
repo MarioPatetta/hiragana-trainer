@@ -139,3 +139,35 @@ button:disabled {
   .app { padding: 20px; }
   .character { font-size: 85px; }
 }
+
+.speed-control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.speed-control input {
+  flex: 1;
+  cursor: pointer;
+}
+
+#intervalValue {
+  text-align: center;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.dictation-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dictation-controls .controls {
+  display: flex;
+  gap: 10px;
+}
+
+.dictation-controls .controls button {
+  flex: 1;
+}

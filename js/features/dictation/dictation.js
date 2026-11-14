@@ -1,5 +1,5 @@
 
-import { getAudioPath } from "./audio.js";
+import { getAudioPath } from "../../services/audio.js";
 
 export class Dictation {
   constructor({ getCharacter, getInterval, onStatus, onNext }) {
@@ -9,6 +9,7 @@ export class Dictation {
     this.onNext = onNext;
 
     this.running = false;
+    this.replaying = false;
     this.audio = null;
     this.timer = null;
 
@@ -51,7 +52,16 @@ export class Dictation {
       currentAudio.onended = () => {
         if (!this.running || this.audio !== currentAudio) return;
 
-        this.onStatus("Next character coming...");
+        if (this.replaying) {
+          this.replaying = false;
+          this.running = false;
+          this.onStatus("Paused");
+          return;
+        }
+
+        this.onStatus(
+          this.replaying ? "Replaying..." : "Listening..."
+        );
         this.scheduleNext();
       };
 
@@ -113,6 +123,7 @@ export class Dictation {
 
   pause() {
     this.running = false;
+    this.replaying = false;
 
     if (this.waiting) {
       clearTimeout(this.timer);
@@ -132,6 +143,7 @@ export class Dictation {
 
   repeat() {
     this.running = true;
+    this.replaying = true;
     this.speak(true);
   }
 

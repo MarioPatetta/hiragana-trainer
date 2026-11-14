@@ -1,5 +1,7 @@
 # hiragana-trainer
 
+**Live Demo:** https://mariopatetta.github.io/hiragana-trainer/
+
 ## Audio credits
 
 Kana Sounds dataset

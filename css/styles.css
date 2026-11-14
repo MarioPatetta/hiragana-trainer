@@ -1,0 +1,141 @@
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 20px;
+  display: grid;
+  place-items: center;
+  background: #f3f4f8;
+  color: #252638;
+  font-family: system-ui, sans-serif;
+}
+
+.app {
+  background: white;
+  width: 100%;
+  max-width: 460px;
+  padding: 28px;
+  border-radius: 20px;
+  box-shadow: 0 8px 35px #0001;
+  text-align: center;
+}
+
+h1 { margin: 0; }
+h2 { margin-top: 25px; }
+
+.subtitle { color: #777; margin-bottom: 24px; }
+
+label {
+  display: block;
+  text-align: left;
+  font-size: 14px;
+  margin: 12px 0 6px;
+}
+
+select, button {
+  font: inherit;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+select {
+  width: 100%;
+  border: 1px solid #ddd;
+  background: white;
+  margin-bottom: 15px;
+}
+
+button {
+  border: 0;
+  margin: 5px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+.primary { background: #6846d9; color: white; }
+.secondary { background: #eeeafc; color: #5134b5; }
+.success { background: #dcf5e5; color: #176b3b; }
+.wrong { background: #ffe5e5; color: #a32c2c; }
+
+.mode-selector, .controls {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 12px 0 20px;
+}
+
+.character {
+  font-size: 105px;
+  padding: 25px;
+  background: #f5f3ff;
+  border-radius: 16px;
+  margin-bottom: 15px;
+}
+
+.answer {
+  min-height: 45px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #6846d9;
+}
+
+.dictation-answer {
+  min-height: 85px;
+  font-size: 65px;
+  margin: 15px;
+  color: #6846d9;
+}
+
+.status {
+  color: #777;
+  font-size: 14px;
+}
+
+.hidden { display: none !important; }
+
+.progress {
+  background: #eee;
+  height: 7px;
+  border-radius: 10px;
+  margin: 25px 0 20px;
+  overflow: hidden;
+}
+
+.progress div {
+  height: 100%;
+  width: 0;
+  background: #6846d9;
+  transition: width .2s;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+}
+
+.stat strong {
+  display: block;
+  font-size: 23px;
+}
+
+.stat span {
+  color: #888;
+  font-size: 12px;
+}
+
+@media(max-width: 400px) {
+  .app { padding: 20px; }
+  .character { font-size: 85px; }
+}

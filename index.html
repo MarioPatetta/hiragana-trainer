@@ -2,303 +2,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hiragana Trainer</title>
-<style>
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  padding: 20px;
-  display: grid;
-  place-items: center;
-  background: #f3f4f8;
-  color: #252638;
-  font-family: system-ui, sans-serif;
-}
-
-.app {
-  background: white;
-  width: 100%;
-  max-width: 460px;
-  padding: 28px;
-  border-radius: 20px;
-  box-shadow: 0 8px 35px #0001;
-  text-align: center;
-}
-
-h1 { margin: 0; }
-.subtitle { color: #777; margin-bottom: 24px; }
-
-select, button {
-  font: inherit;
-  padding: 12px;
-  border-radius: 10px;
-}
-
-select {
-  width: 100%;
-  border: 1px solid #ddd;
-  background: white;
-  margin-bottom: 20px;
-}
-
-.character {
-  font-size: 105px;
-  padding: 25px;
-  background: #f5f3ff;
-  border-radius: 16px;
-  margin-bottom: 15px;
-}
-
-.answer {
-  min-height: 45px;
-  font-size: 28px;
-  font-weight: bold;
-  color: #6846d9;
-}
-
-button {
-  border: 0;
-  margin: 5px;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-button:disabled {
-  opacity: .4;
-  cursor: not-allowed;
-}
-
-.primary { background: #6846d9; color: white; }
-.secondary { background: #eeeafc; color: #5134b5; }
-.success { background: #dcf5e5; color: #176b3b; }
-.wrong { background: #ffe5e5; color: #a32c2c; }
-
-.hidden { display: none !important; }
-
-.stats {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 25px;
-  padding-top: 20px;
-  border-top: 1px solid #eee;
-}
-
-.stat strong { display: block; font-size: 23px; }
-.stat span { color: #888; font-size: 12px; }
-
-.progress {
-  background: #eee;
-  height: 7px;
-  border-radius: 10px;
-  margin: 20px 0;
-  overflow: hidden;
-}
-
-.progress div {
-  height: 100%;
-  width: 0;
-  background: #6846d9;
-  transition: width .2s;
-}
-
-@media(max-width:400px) {
-  .app { padding: 20px; }
-  .character { font-size: 85px; }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hiragana Trainer</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="module" src="js/app.js"></script>
 </head>
 
 <body>
-<main class="app">
-  <h1>あ Hiragana Trainer</h1>
-  <p class="subtitle">Learn Japanese, one character at a time.</p>
+  <main class="app">
+    <header>
+      <h1>あ Hiragana Trainer</h1>
+      <p class="subtitle">Learn Japanese, one character at a time.</p>
+    </header>
 
-  <select id="group">
-    <option value="all">All hiragana</option>
-    <option value="basic">V1 – Basic hiragana</option>
-    <option value="dakuten">V2 – Dakuten</option>
-    <option value="handakuten">V2 – Handakuten</option>
-    <option value="combination">V3 – Combinations</option>
-  </select>
+    <label for="group">Learning group</label>
+    <select id="group">
+      <option value="all">All hiragana</option>
+      <option value="basic">V1 – Basic hiragana</option>
+      <option value="dakuten">V2 – Dakuten</option>
+      <option value="handakuten">V2 – Handakuten</option>
+      <option value="combination">V3 – Combinations</option>
+    </select>
 
-  <div class="character" id="kana">あ</div>
-  <div class="answer" id="answer">?</div>
+    <nav class="mode-selector">
+      <button id="flashMode" class="primary">Flashcards</button>
+      <button id="dictationMode" class="secondary">🎧 Dictation</button>
+    </nav>
 
-  <button class="primary" id="reveal">Reveal answer</button>
+    <!-- FLASHCARD MODE -->
+    <section id="flashPanel">
+      <div class="character" id="kana">あ</div>
+      <div class="answer" id="answer">?</div>
 
-  <div id="rating" class="hidden">
-    <p>Did you get it right?</p>
-    <button class="success" id="correctBtn">✓ Correct</button>
-    <button class="wrong" id="wrongBtn">✗ Incorrect</button>
-  </div>
+      <button class="primary" id="reveal">Reveal answer</button>
 
-  <div>
-    <button class="secondary" id="next">Next character →</button>
-  </div>
+      <div id="rating" class="hidden">
+        <p>Did you get it right?</p>
+        <button class="success" id="correctBtn">✓ Correct</button>
+        <button class="wrong" id="wrongBtn">✗ Incorrect</button>
+      </div>
 
-  <div class="progress">
-    <div id="progressBar"></div>
-  </div>
+      <button class="secondary" id="next">Next character →</button>
+    </section>
 
-  <div class="stats">
-    <div class="stat">
-      <strong id="total">0</strong>
-      <span>Practised</span>
+    <!-- DICTATION MODE -->
+    <section id="dictationPanel" class="hidden">
+      <h2>Japanese Dictation</h2>
+      <p>Listen and identify the character.</p>
+
+      <label for="interval">Interval between characters</label>
+      <select id="interval">
+        <option value="1">1 second</option>
+        <option value="2" selected>2 seconds</option>
+        <option value="3">3 seconds</option>
+        <option value="5">5 seconds</option>
+      </select>
+
+      <div class="controls">
+        <button class="primary" id="startDictation">▶ Start</button>
+        <button class="secondary" id="pauseDictation">Ⅱ Pause</button>
+        <button class="secondary" id="repeatDictation">↻ Repeat</button>
+      </div>
+
+      <button class="secondary" id="showDictation">Show character</button>
+
+      <div class="dictation-answer" id="dictationAnswer"></div>
+      <p id="dictationStatus" class="status">Ready to listen</p>
+    </section>
+
+    <!-- STATISTICS -->
+    <div class="progress">
+      <div id="progressBar"></div>
     </div>
-    <div class="stat">
-      <strong id="correct">0</strong>
-      <span>Correct</span>
+
+    <div class="stats">
+      <div class="stat">
+        <strong id="total">0</strong>
+        <span>Practised</span>
+      </div>
+      <div class="stat">
+        <strong id="correct">0</strong>
+        <span>Correct</span>
+      </div>
+      <div class="stat">
+        <strong id="streak">0</strong>
+        <span>Streak</span>
+      </div>
     </div>
-    <div class="stat">
-      <strong id="streak">0</strong>
-      <span>Streak</span>
-    </div>
-  </div>
-</main>
-
-<script>
-const groups = {
-  basic: [
-    ["あ","a"],["い","i"],["う","u"],["え","e"],["お","o"],
-    ["か","ka"],["き","ki"],["く","ku"],["け","ke"],["こ","ko"],
-    ["さ","sa"],["し","shi"],["す","su"],["せ","se"],["そ","so"],
-    ["た","ta"],["ち","chi"],["つ","tsu"],["て","te"],["と","to"],
-    ["な","na"],["に","ni"],["ぬ","nu"],["ね","ne"],["の","no"],
-    ["は","ha"],["ひ","hi"],["ふ","fu"],["へ","he"],["ほ","ho"],
-    ["ま","ma"],["み","mi"],["む","mu"],["め","me"],["も","mo"],
-    ["や","ya"],["ゆ","yu"],["よ","yo"],
-    ["ら","ra"],["り","ri"],["る","ru"],["れ","re"],["ろ","ro"],
-    ["わ","wa"],["を","wo"],["ん","n"]
-  ],
-
-  dakuten: [
-    ["が","ga"],["ぎ","gi"],["ぐ","gu"],["げ","ge"],["ご","go"],
-    ["ざ","za"],["じ","ji"],["ず","zu"],["ぜ","ze"],["ぞ","zo"],
-    ["だ","da"],["ぢ","ji"],["づ","zu"],["で","de"],["ど","do"],
-    ["ば","ba"],["び","bi"],["ぶ","bu"],["べ","be"],["ぼ","bo"]
-  ],
-
-  handakuten: [
-    ["ぱ","pa"],["ぴ","pi"],["ぷ","pu"],["ぺ","pe"],["ぽ","po"]
-  ],
-
-  combination: [
-    ["きゃ","kya"],["きゅ","kyu"],["きょ","kyo"],
-    ["しゃ","sha"],["しゅ","shu"],["しょ","sho"],
-    ["ちゃ","cha"],["ちゅ","chu"],["ちょ","cho"],
-    ["にゃ","nya"],["にゅ","nyu"],["にょ","nyo"],
-    ["ひゃ","hya"],["ひゅ","hyu"],["ひょ","hyo"],
-    ["みゃ","mya"],["みゅ","myu"],["みょ","myo"],
-    ["りゃ","rya"],["りゅ","ryu"],["りょ","ryo"],
-    ["ぎゃ","gya"],["ぎゅ","gyu"],["ぎょ","gyo"],
-    ["じゃ","ja"],["じゅ","ju"],["じょ","jo"],
-    ["びゃ","bya"],["びゅ","byu"],["びょ","byo"],
-    ["ぴゃ","pya"],["ぴゅ","pyu"],["ぴょ","pyo"]
-  ]
-};
-
-let deck = [];
-let current = null;
-let previous = null;
-let total = 0;
-let correct = 0;
-let streak = 0;
-let answered = false;
-
-const $ = id => document.getElementById(id);
-
-function shuffle(items) {
-  const result = [...items];
-
-  for (let i = result.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [result[i], result[j]] = [result[j], result[i]];
-  }
-
-  return result;
-}
-
-function getCharacters() {
-  const selected = $("group").value;
-
-  if (selected === "all") {
-    return Object.values(groups).flat();
-  }
-
-  return groups[selected];
-}
-
-function refillDeck() {
-  deck = shuffle(getCharacters());
-
-  if (deck.length > 1 && deck[deck.length - 1] === previous) {
-    [deck[0], deck[deck.length - 1]] =
-      [deck[deck.length - 1], deck[0]];
-  }
-}
-
-function nextKana() {
-  if (deck.length === 0) refillDeck();
-
-  previous = current;
-  current = deck.pop();
-  answered = false;
-
-  $("kana").textContent = current[0];
-  $("answer").textContent = "?";
-  $("reveal").disabled = false;
-  $("rating").classList.add("hidden");
-}
-
-function reveal() {
-  if (answered) return;
-
-  $("answer").textContent = current[1];
-  $("rating").classList.remove("hidden");
-  $("reveal").disabled = true;
-}
-
-function rate(isCorrect) {
-  if (answered) return;
-
-  answered = true;
-  total++;
-
-  if (isCorrect) {
-    correct++;
-    streak++;
-  } else {
-    streak = 0;
-  }
-
-  $("total").textContent = total;
-  $("correct").textContent = correct;
-  $("streak").textContent = streak;
-
-  $("progressBar").style.width =
-    (total ? correct / total * 100 : 0) + "%";
-
-  nextKana();
-}
-
-$("reveal").addEventListener("click", reveal);
-$("next").addEventListener("click", nextKana);
-$("correctBtn").addEventListener("click", () => rate(true));
-$("wrongBtn").addEventListener("click", () => rate(false));
-
-$("group").addEventListener("change", () => {
-  deck = [];
-  previous = null;
-  current = null;
-  nextKana();
-});
-
-nextKana();
-</script>
+  </main>
 </body>
 </html>
-

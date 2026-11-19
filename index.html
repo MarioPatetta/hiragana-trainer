@@ -13,17 +13,25 @@
   <main class="app">
     <header>
       <h1>あ Hiragana Trainer</h1>
-      <p class="subtitle">Learn Japanese, one character at a time.</p>
+      <p class="subtitle">Basic exercises for learning Japanese.</p>
     </header>
+    
+    <section class="learning-selector" aria-labelledby="learningTitle">
+      <div class="selector-heading">
+        <div>
+          <h2 id="learningTitle">Learning content</h2>
+          <p>Select one or more groups to practise</p>
+        </div>
+        <button id="selectAllGroups" class="text-button" type="button">
+          Select all
+        </button>
+      </div>
 
-    <label for="group">Learning group</label>
-    <select id="group">
-      <option value="all">All hiragana</option>
-      <option value="basic">V1 – Basic hiragana</option>
-      <option value="dakuten">V2 – Dakuten</option>
-      <option value="handakuten">V2 – Handakuten</option>
-      <option value="combination">V3 – Combinations</option>
-    </select>
+      <div id="learningCategories"></div>
+
+      <p id="selectionSummary" class="selection-summary"
+        aria-live="polite"></p>
+    </section>
 
     <nav class="mode-selector">
       <button id="flashMode" class="primary">Flashcards</button>

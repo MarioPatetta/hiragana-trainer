@@ -5,7 +5,6 @@
 ## TODO
 
 - numbers
-- charachter selection toggle instead of drop-down menu
 
 ## Audio credits
 

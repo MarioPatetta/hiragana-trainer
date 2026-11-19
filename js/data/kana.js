@@ -1,4 +1,18 @@
 
+export const categoryGroups = [
+  {
+    id: "hiragana",
+    label: "Hiragana",
+    symbol: "あ",
+    groups: [
+      { id: "basic", label: "Basic hiragana" },
+      { id: "dakuten", label: "Dakuten" },
+      { id: "handakuten", label: "Handakuten" },
+      { id: "combination", label: "Combinations" }
+    ]
+  }
+];
+
 export const groups = {
   basic: [
     ["あ","a"],["い","i"],["う","u"],["え","e"],["お","o"],
@@ -39,10 +53,14 @@ export const groups = {
   ]
 };
 
-export function getCharacters(group) {
-  if (group === "all") {
-    return Object.values(groups).flat();
-  }
+export function getCharacters(selectedGroups = ["basic"]) {
+  const selected = Array.isArray(selectedGroups)
+    ? selectedGroups
+    : selectedGroups === "all"
+      ? Object.keys(groups)
+      : [selectedGroups];
 
-  return groups[group] || groups.basic;
+  return [...new Set(selected)].flatMap(
+    group => groups[group] || []
+  );
 }

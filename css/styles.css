@@ -36,17 +36,10 @@ label {
   margin: 12px 0 6px;
 }
 
-select, button {
+button {
   font: inherit;
   padding: 12px;
   border-radius: 10px;
-}
-
-select {
-  width: 100%;
-  border: 1px solid #ddd;
-  background: white;
-  margin-bottom: 15px;
 }
 
 button {
@@ -170,4 +163,132 @@ button:disabled {
 
 .dictation-controls .controls button {
   flex: 1;
+}
+
+
+/* LEARNING CATEGORY SELECTOR */
+
+.learning-selector {
+  text-align: left;
+  margin: 20px 0;
+  padding: 16px;
+  background: #f8f7fc;
+  border-radius: 16px;
+}
+
+.selector-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.selector-heading h2 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.selector-heading p {
+  margin: 5px 0 0;
+  color: #777;
+  font-size: 13px;
+}
+
+.text-button {
+  background: transparent;
+  color: #6846d9;
+  padding: 8px;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.category-section {
+  margin-bottom: 14px;
+}
+
+.macro-toggle {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  padding: 12px;
+  margin: 0 0 9px;
+  border: 1px solid #ded9ef;
+  background: white;
+  color: #333;
+  text-align: left;
+  border-radius: 12px;
+}
+
+.macro-toggle[data-state="selected"] {
+  background: #6846d9;
+  color: white;
+  border-color: #6846d9;
+}
+
+.macro-toggle[data-state="partial"] {
+  background: #eeeafc;
+  color: #5134b5;
+  border-color: #b9a9ed;
+}
+
+.macro-symbol {
+  font-size: 25px;
+}
+
+.macro-label {
+  flex: 1;
+}
+
+.macro-status {
+  font-size: 12px;
+  opacity: .8;
+}
+
+.micro-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding-left: 8px;
+}
+
+.micro-toggle {
+  margin: 0;
+  padding: 9px 12px;
+  background: white;
+  color: #555;
+  border: 1px solid #ddd;
+  border-radius: 9px;
+  font-size: 13px;
+}
+
+.micro-toggle.selected {
+  background: #e8e1ff;
+  border-color: #6846d9;
+  color: #5134b5;
+}
+
+.selection-summary {
+  color: #777;
+  font-size: 12px;
+  text-align: center;
+  margin: 14px 0 0;
+}
+
+.macro-toggle:focus-visible,
+.micro-toggle:focus-visible,
+.text-button:focus-visible {
+  outline: 3px solid #9b85ed;
+  outline-offset: 3px;
+}
+
+@media (max-width: 400px) {
+  .learning-selector {
+    padding: 12px;
+  }
+
+  .micro-toggle {
+    padding: 8px 10px;
+  }
 }
